@@ -20,8 +20,21 @@
     
     selectWorker () {
       var workerId = this._workerQueue.shift();
+      
+      if (!workerId) {
+        console.error("Worker queue is empty!");
+        return null;
+      }
+      
       this._workerQueue.push(workerId);
-      return this._workers[workerId];
+
+      var worker = this._workers[workerId];
+      if (!worker) {
+        console.error(util.format("Could not find a worker with id %s", workerId));
+        return null;
+      }
+      
+      return worker;
     }
     
     _createProxy (host, port) {
