@@ -16,8 +16,10 @@
     if (worker) {
       var proxy = worker.proxy;
       proxy.web(req, res);
-    
+      
       proxy.on('error', function (err, req, res) {
+        console.error(err, "Error");
+      
         // TODO: Migrate to another server
         if (!res.socket) {
           // client abort
@@ -33,10 +35,12 @@
       });
     } else {
       console.error("Unable to create web proxy: No workers connected...");
-      socket.end();
+      if (res.socket) {
+        res.socket.end();
+      }
     }
   });
-
+  
   server.on('upgrade', function(req, socket, head) {
     var worker = workers.selectWorker();
     if (worker) {
@@ -50,7 +54,9 @@
       });
     } else {
       console.error("Unable to create websocket proxy: No workers connected...");
-      socket.end();
+      if (socket) {
+        socket.end();
+      }
     }
   });
 
