@@ -2,14 +2,14 @@
   "name": "shady-front",
   "description": "Shady Business front end server",
   "version": "0.0.2",
-  "contributors": [ ],
+  "contributors": [],
   "dependencies": {
-    "express": "4.13.4",
-    "websocket": "1.0.22",
+    "express": "4.15.2",
+    "http-proxy": "1.16.2",
+    "lodash": "^4.17.4",
+    "shady-messages": "latest",
     "uuid4": "1.0.0",
-    "underscore": "1.8.3",
-    "http-proxy": "1.13.2",
-    "shady-messages": "latest"
+    "websocket": "1.0.24"
   },
   "readmeFilename": "README.md"
 }

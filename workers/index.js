@@ -1,20 +1,18 @@
 (function() {
   'use strict';
 
-  var proxy = require('http-proxy');
-  var util = require('util');
-  var _ = require("underscore");
-  var ShadyMessages = require('shady-messages');
-
-  var WORKER_TIMEOUT = 2000;
+  const proxy = require('http-proxy');
+  const util = require('util');
+  const _ = require("lodash");
+  const shadyMessages = require('shady-messages').getInstance();
+  const WORKER_TIMEOUT = 2000;
   
   module.exports = class {
     
     constructor() {
       this._workers = {};
       this._workerQueue = [];
-      this._shadyMessages = new ShadyMessages();
-      this._shadyMessages.on("cluster:ping", this._onClusterPing.bind(this));
+      shadyMessages.on("cluster:ping", this._onClusterPing.bind(this));
       setInterval(this._workerReaper.bind(this), 1000);
     }
     
@@ -57,7 +55,7 @@
       
       this._workerQueue.push(workerId);
     
-      this._shadyMessages.trigger("cluster:worker-connected", {
+      shadyMessages.trigger("cluster:worker-connected", {
         workerId: workerId,
         host: host,
         port: port
@@ -69,7 +67,7 @@
       var worker = this._workers[workerId];
       delete this._workers[workerId];
       
-      this._shadyMessages.trigger("cluster:worker-disconnected", {
+      shadyMessages.trigger("cluster:worker-disconnected", {
         workerId: workerId,
         port: worker.port,
         host: worker.host
