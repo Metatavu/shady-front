@@ -3,64 +3,15 @@
 (() => {
   'use strict';
   
-  const uuid = require('uuid4');
-  const http = require('http');
-  const proxy = require('http-proxy');
-  const Logger = require(__dirname + '/logger');
-  const Workers = require(__dirname + '/workers');
-
-  const workers = new Workers();
-  const loggger = new Logger();
+  const architect = require('architect');
+  const architectConfig = architect.loadConfig(__dirname + '/config.js');
   
-  const server = http.createServer((req, res) => {
-    const worker = workers.selectWorker();
-    if (worker) {
-      const proxy = worker.proxy;
-      proxy.web(req, res);
-      
-      proxy.on('error', (err, req, res) => {
-        console.error(err, "Error");
-      
-        // TODO: Migrate to another server
-        if (!res.socket) {
-          // client abort
-          res.end();      
-        } else {
-          if (res.socket.destroyed) {
-            // client abort
-            res.end();       
-          } else {
-            console.error(err);
-          }
-        }
-      });
+  architect.createApp(architectConfig, (err, app) => {
+    if(!err) {
+      console.log("Shady front started");
     } else {
-      console.error("Unable to create web proxy: No workers connected...");
-      if (res.socket) {
-        res.socket.end();
-      }
+      console.error(err);
     }
   });
-  
-  server.on('upgrade', (req, socket, head) => {
-    const worker = workers.selectWorker();
-    if (worker) {
-      const proxy = worker.proxy;
-      proxy.ws(req, socket, head);
-    
-      proxy.on('error', function(err, req, socket) {
-        // TODO: Migrate to another server
-        console.error(err, "WebSocket error occurred");
-        socket.end();
-      });
-    } else {
-      console.error("Unable to create websocket proxy: No workers connected...");
-      if (socket) {
-        socket.end();
-      }
-    }
-  });
-
-  server.listen(8000);
   
 })();

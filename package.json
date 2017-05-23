@@ -4,10 +4,11 @@
   "version": "0.0.2",
   "contributors": [],
   "dependencies": {
+    "architect": "0.1.13",
+    "architect-logger": "0.0.1",
     "express": "4.15.2",
     "http-proxy": "1.16.2",
     "lodash": "^4.17.4",
-    "shady-messages": "latest",
     "uuid4": "1.0.0",
     "websocket": "1.0.24"
   },

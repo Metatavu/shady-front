@@ -1,0 +1,15 @@
+{
+  "name": "shady-balanced",
+  "version": "0.0.1",
+  "description": "Load balancer plugin to shady-engine",
+  "main": "index.js",
+  "plugin": {
+    "provides": [
+      "shady-workers"
+    ],
+    "consumes": [
+      "shady-messages",
+      "logger"
+    ]
+  }
+}
