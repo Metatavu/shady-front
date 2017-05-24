@@ -62,7 +62,7 @@
         port: port
       });
       
-      this._logger.info("Worker %s connected", workerId);
+      this._logger.info(util.format("Worker %s connected", workerId));
     }
 
     _disconnectWorker (workerId) {
@@ -76,7 +76,7 @@
         host: worker.host
       });
       
-      this._logger.info("Disconnected worker %s", workerId);
+      this._logger.info(util.format("Disconnected worker %s", workerId));
     }
 
     _onClusterPing (event, data) {
