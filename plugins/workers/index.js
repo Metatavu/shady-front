@@ -5,9 +5,10 @@
   const util = require('util');
   const _ = require("lodash");
   const WORKER_TIMEOUT = 2000;
+  const config = require('nconf');
   
   const WorkerPool = class {
-
+ 
     constructor(shadyMessages, logger) {
       this._logger = logger;
       this._workers = {};
@@ -15,10 +16,12 @@
       this._shadyMessages = shadyMessages;
       this._shadyMessages.on("cluster:ping", this._onClusterPing.bind(this));
       setInterval(this._workerReaper.bind(this), 1000);
+      
+      logger.info(util.format("Listening server group %s", this._getServerGroup()));
     }
 
     selectWorker () {
-      var workerId = this._workerQueue.shift();
+      const workerId = this._workerQueue.shift();
 
       if (!workerId) {
         console.error("Worker queue is empty!");
@@ -27,13 +30,17 @@
 
       this._workerQueue.push(workerId);
 
-      var worker = this._workers[workerId];
+      const worker = this._workers[workerId];
       if (!worker) {
         console.error(util.format("Could not find a worker with id %s", workerId));
         return null;
       }
 
       return worker;
+    }
+    
+    _getServerGroup() {
+      return config.get('server-group')||'default';
     }
 
     _createProxy (host, port) {
@@ -67,7 +74,7 @@
 
     _disconnectWorker (workerId) {
       this._workerQueue = _.without(this._workerQueue, workerId);
-      var worker = this._workers[workerId];
+      const worker = this._workers[workerId];
       delete this._workers[workerId];
 
       this._shadyMessages.trigger("cluster:worker-disconnected", {
@@ -80,12 +87,16 @@
     }
 
     _onClusterPing (event, data) {
-      var workerId = data.workerId;
-      var host = data.host;
-      var port = data.port;
-      var clients = data.clients;
+      const workerId = data.workerId;
+      const host = data.host;
+      const port = data.port;
+      const serverGroup = data['server-group'];
+      
+      if (serverGroup !== this._getServerGroup()) {
+        return;
+      }
+      
       var now = new Date().getTime();
-
       if (!this._workers[workerId]) {
         this._addWorker(workerId, host, port);
       }

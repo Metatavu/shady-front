@@ -9,6 +9,7 @@
     "express": "4.15.2",
     "http-proxy": "1.16.2",
     "lodash": "^4.17.4",
+    "nconf": "^0.8.4",
     "uuid4": "1.0.0",
     "websocket": "1.0.24"
   },

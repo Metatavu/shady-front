@@ -45,7 +45,7 @@
           const proxy = worker.proxy;
           proxy.ws(req, socket, head);
 
-          proxy.on('error', function(err, req, socket) {
+          proxy.on('error', (err, req, socket) => {
             // TODO: Migrate to another server
             console.error(err, "WebSocket error occurred");
             socket.end();
