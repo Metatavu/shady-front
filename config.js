@@ -9,7 +9,7 @@ module.exports = [
       }
     }
   },
-  "../shady-messages",
+  "shady-messages",
   "./plugins/balancer",
   "./plugins/workers",
 ];

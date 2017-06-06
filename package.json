@@ -1,7 +1,7 @@
 {
   "name": "shady-front",
   "description": "Shady Business front end server",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "contributors": [],
   "dependencies": {
     "architect": "0.1.13",
@@ -10,6 +10,7 @@
     "http-proxy": "1.16.2",
     "lodash": "^4.17.4",
     "nconf": "^0.8.4",
+    "shady-messages": "0.2.0",
     "uuid4": "1.0.0",
     "websocket": "1.0.24"
   },
