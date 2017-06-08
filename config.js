@@ -1,4 +1,6 @@
-module.exports = [
+ const config = require('nconf');
+ 
+ module.exports = [
   {
     "packagePath": "architect-logger",
     "exitOnError": false,
@@ -9,7 +11,10 @@ module.exports = [
       }
     }
   },
-  "shady-messages",
+  {
+    "packagePath": "shady-messages",
+    "amqpUrl": config.get('amqp:url')
+  },
   "./plugins/balancer",
   "./plugins/workers",
 ];
