@@ -10,7 +10,7 @@
     "http-proxy": "1.16.2",
     "lodash": "^4.17.4",
     "nconf": "^0.8.4",
-    "shady-messages": "0.2.0",
+    "shady-messages": "0.3.0",
     "uuid4": "1.0.0",
     "websocket": "1.0.24"
   },
